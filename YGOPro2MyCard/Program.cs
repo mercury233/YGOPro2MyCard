@@ -50,6 +50,8 @@ namespace YGOPro2MyCard
                 if (args.Length > 0)
                 {
                     string cmd = args[0];
+                    string cmdFile = Path.Combine(path, "commamd.shell");
+                    string[] cmds;
                     switch (cmd){
                         case "-j":
                             ConfParser pro1Config = new ConfParser();
@@ -59,12 +61,20 @@ namespace YGOPro2MyCard
                             string roompass = pro1Config.GetStringValue("roompass");
                             string nickname = pro1Config.GetStringValue("nickname").Replace(" ","　");
 
-                            string cmdFile = Path.Combine(path, "commamd.shell");
-
-                            string[] cmds = { "online", nickname, host, port, "0x233", roompass };
+                            cmds = new []{ "online", nickname, host, port, "0x233", roompass };
 
                             File.WriteAllText(cmdFile, String.Join(" ", cmds));
                             break;
+
+                        case "-d":
+                            if (args.Length == 2)
+                            {
+                                cmds = new[] { "edit", args[1] };
+
+                                File.WriteAllText(cmdFile, String.Join(" ", cmds));
+                            }
+                            break;
+
                         default:
                             break;
                     }
